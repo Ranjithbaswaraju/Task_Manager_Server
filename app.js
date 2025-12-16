@@ -10,8 +10,11 @@ const managerRoutes=require("./Routes/managerRoutes.js")
 const employeeRoutes=require("./Routes/employeeRoutes.js")
 app.use(express.json())
 app.use(express.urlencoded())
+const cors=require('cors')
 
-
+app.use(cors({
+    origin:["http://localhost:5173"]
+}))
 
 //databse
 connectDatabase()
