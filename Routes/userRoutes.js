@@ -1,22 +1,52 @@
+// const express = require("express");
+// const router = express.Router();
+// const { getProfile, editProfile } = require("../Controllers/userControllers");
+// const {upload}=require("../Utils/multerFileUpload.js")
+// const {
+//   tokenValidator,
+//   validateMiddleware,
+//   editProfileValidator,
+// } = require("../Validators/authValidators.js");
+// const { checkAuth } = require("../Middlewares/authMiddleware.js");
+// router.get(
+//   "/profile",
+//   tokenValidator,
+//   validateMiddleware,
+//   checkAuth,
+//   getProfile
+// );
+
+// router.put(
+//   "/editProfile",
+//   tokenValidator,
+//   editProfileValidator,
+//   validateMiddleware,
+//   checkAuth,
+//   upload.single("profilePic"),
+//   editProfile
+// );
+
+// module.exports = router;
+
+
 const express = require("express");
-const router = express.Router();
+const Router = express.Router();
 const { getProfile, editProfile } = require("../Controllers/userControllers");
-const {upload}=require("../Utils/multerFileUpload.js")
 const {
   tokenValidator,
-  validateMiddleware,
   editProfileValidator,
+  validateMiddleware,
 } = require("../Validators/authValidators.js");
 const { checkAuth } = require("../Middlewares/authMiddleware.js");
-router.get(
+const { upload } = require("../Utils/multerFileUpload.js");
+Router.get(
   "/profile",
   tokenValidator,
   validateMiddleware,
   checkAuth,
   getProfile
 );
-
-router.put(
+Router.put(
   "/editProfile",
   tokenValidator,
   editProfileValidator,
@@ -26,4 +56,4 @@ router.put(
   editProfile
 );
 
-module.exports = router;
+module.exports = Router;

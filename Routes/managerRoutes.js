@@ -1,25 +1,83 @@
+// const express = require("express");
+// const router = express.Router();
+// const {
+//   createTicket,
+//   getAllTickets,
+//   getTicketByID,
+//   getAllEmployees
+// } = require("../Controllers/managersController.js");
+// const { checkAuth, checkRole } = require("../Middlewares/authMiddleware.js");
+// const {
+//   tokenValidator,
+//   validateMiddleware,
+// } = require("../Validators/authValidators.js");
+
+// router.post(
+//   "/createTicket",
+//   tokenValidator,
+//   validateMiddleware,
+//   checkAuth,
+//   checkRole("manager"),
+//   createTicket
+// );
+// router.get(
+//   "/allTickets",
+//   tokenValidator,
+//   validateMiddleware,
+//   checkAuth,
+//   checkRole("manager"),
+//   getAllTickets
+// );
+// router.get(
+//   "/ticketByID/:ticketID",
+//   tokenValidator,
+//   validateMiddleware,
+//   checkAuth,
+//   checkRole("manager"),
+//   getTicketByID
+// );
+// router.get('/getAllEmployees',
+//   tokenValidator,
+//   validateMiddleware,
+//   checkAuth,
+//   checkRole("manager"),
+//   getAllEmployees
+// )
+
+// module.exports = router;
+
+
 const express = require("express");
-const router = express.Router();
+const Router = express.Router();
 const {
   createTicket,
   getAllTickets,
   getTicketByID,
-} = require("../Controllers/managerControlls");
+  getAllEmployees,
+} = require("../Controllers/managersController.js");
 const { checkAuth, checkRole } = require("../Middlewares/authMiddleware.js");
 const {
   tokenValidator,
   validateMiddleware,
 } = require("../Validators/authValidators.js");
 
-router.post(
-  "/createTicket",
+Router.get(
+  "/getAllEmployees",
+  tokenValidator,
+  validateMiddleware,
+  checkAuth,
+  checkRole("manager"),
+  getAllEmployees
+);
+Router.post(
+  "/create",
   tokenValidator,
   validateMiddleware,
   checkAuth,
   checkRole("manager"),
   createTicket
 );
-router.get(
+Router.get(
   "/allTickets",
   tokenValidator,
   validateMiddleware,
@@ -27,7 +85,7 @@ router.get(
   checkRole("manager"),
   getAllTickets
 );
-router.get(
+Router.get(
   "/ticketByID/:ticketID",
   tokenValidator,
   validateMiddleware,
@@ -36,4 +94,4 @@ router.get(
   getTicketByID
 );
 
-module.exports = router;
+module.exports = Router;

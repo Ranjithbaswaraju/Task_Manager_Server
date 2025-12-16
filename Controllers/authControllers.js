@@ -1,43 +1,93 @@
+// const bcryptjs = require("bcryptjs");
+// const { UserModel } = require("../Models/authModel.js");
+// const { generateToken } = require("../Utils/token.js");
+// const dotenv = require("dotenv");
+
+// dotenv.config();
+
+// const signupController = async (req, res, next) => {
+//   try {
+//     const { name, username, email, password } = req.body;
+//     const hashedPassword = await bcryptjs.hashSync(password, 12);
+
+//     const user = new UserModel({
+//       name: name,
+//       username: username,
+//       email: email,
+//       password: hashedPassword,
+//     });
+
+//     const result = await user.save();
+//     res.json(result);
+//   } catch (error) {
+//     const err = { statusCode: 400, message: error.message };
+//     next(err);
+//   }
+// };
+
+// const loginController = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     const findUser = await UserModel.findOne({ email: email });
+//     const decodePassword = await bcryptjs.compare(password, findUser.password);
+//     if (decodePassword) {
+//       const token = await generateToken(findUser);
+//       const user=await UserModel.findById(findUser._id).select(["-password","-__v","-createdAt","-updatedAt"])
+//       res
+//         .status(200)
+//         .json({ message: "Login Succesfully", user, token });
+//     } else {
+//       res.status(429).json({ message: "invalid email/password" });
+//     }
+//   } catch (error) {
+//     const err = { statusCode: 400, message: error.message };
+//     next(err);
+//   }
+// };
+
+// module.exports = { signupController, loginController };
+
 const bcryptjs = require("bcryptjs");
 const { UserModel } = require("../Models/authModel.js");
 const { generateToken } = require("../Utils/token.js");
-const dotenv = require("dotenv");
-
-dotenv.config();
 
 const signupController = async (req, res, next) => {
   try {
     const { name, username, email, password } = req.body;
-    const hashedPassword = await bcryptjs.hashSync(password, 12);
-
-    const user = new UserModel({
+    const hashPassword = await bcryptjs.hash(password, 12);
+    const user = await UserModel.create({
       name: name,
       username: username,
       email: email,
-      password: hashedPassword,
+      password: hashPassword,
     });
-
-    const result = await user.save();
-    res.json(result);
+    res.json(user);
   } catch (error) {
     const err = { statusCode: 400, message: error.message };
     next(err);
   }
 };
 
-const loginController = async (req, res) => {
+const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+
     const findUser = await UserModel.findOne({ email: email });
-    const decodePassword = await bcryptjs.compare(password, findUser.password);
-    if (decodePassword) {
+    const decryptPassword = await bcryptjs.compare(password, findUser.password);
+    if (decryptPassword) {
       const token = await generateToken(findUser);
-      const user=await UserModel.findById(findUser._id).select(["-password","-__v","-createdAt","-updatedAt"])
-      res
+      const user = await UserModel.findById(findUser._id).select([
+        "-password",
+        "-__v",
+        "-createdAt",
+        "-updatedAt",
+      ]);
+      console.log(user);
+      return res
         .status(200)
-        .json({ message: "Login Succesfully", user, token });
+        .json({ message: "Login successfully", user, token });
     } else {
-      res.status(429).json({ message: "invalid email/password" });
+      return res.status(429).json({ message: "invalid email/password" });
     }
   } catch (error) {
     const err = { statusCode: 400, message: error.message };
