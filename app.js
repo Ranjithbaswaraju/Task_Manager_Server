@@ -49,7 +49,7 @@ connectDatabase();
 
 app.use(
   cors({
-    origin: ["https://task-manager-gold-pi.vercel.app'","http://localhost:5173"],
+    origin: ["https://task-manager-gold-pi.vercel.app","http://localhost:5173"],
   })
 );
 
