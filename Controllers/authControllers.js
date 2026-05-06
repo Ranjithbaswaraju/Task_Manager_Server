@@ -13,7 +13,7 @@ const signupController = async (req, res, next) => {
       password: hashPassword,
       role:role
     });
-    res.json(user);
+    res.status(201).json({message:"Signup Successfully"});
   } catch (error) {
     const err = { statusCode: 400, message: error.message };
     next(err);
